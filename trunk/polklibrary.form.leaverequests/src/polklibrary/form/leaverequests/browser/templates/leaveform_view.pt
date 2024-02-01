@@ -1,0 +1,205 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone"
+	  lang="en">
+<body>
+
+
+	<metal:content-title fill-slot="content-title">
+        <h1 class="documentFirstHeading">Leave and Travel Requests</h1>
+    </metal:content-title>
+	<metal:content-description fill-slot="content-description"></metal:content-description>
+
+
+    
+	<metal:block fill-slot="style_slot">
+        <style>
+            #leaverequest-form{
+                padding: 10px;
+            }
+        
+            #leaverequest-form h3{
+                margin-bottom: 10px;
+            }
+            #leaverequest-form .request-data a {
+                border: 1px solid #ccc;
+                display: block;
+                padding: 5px 10px;
+                vertical-align: top;
+            }
+            #leaverequest-form .request-data a:hover {
+                background-color: #eee;
+                text-decoration: none;
+            }
+            
+            #leaverequest-form .leave-reports-box a span:first-child {
+                display: inline-block;
+                font-weight: bold;
+                width: 100px;
+                vertical-align: top;
+            }
+            #leaverequest-form .leave-reports-box a span:last-child {
+                display: block;
+                vertical-align: top;
+            }
+            #leaverequest-form .travel-reports-box a span:first-child {
+                display: inline-block;
+                font-weight: bold;
+                width: 300px;
+                vertical-align: top;
+            }
+            #leaverequest-form .travel-reports-box a span:last-child {
+                display: block;
+                vertical-align: top;
+                margin-left: 10px;
+            }
+            
+            #leaverequest-form .request-data a.your-reviews span:last-child {
+                display: block;
+                color: gray;
+                vertical-align: top;
+            }
+            #showmore-your-requests, #showmore-your-reviews {
+                color: #2385c4;
+                cursor: pointer;
+                font-style: italic;
+                border: 0px none !important;
+                background-color: transparent !important;
+            }
+            #leaverequest-form .submit-leaverequest{
+                background-color: #1072b1;
+                border-radius: 5px;
+                color: white;
+                display: inline-block;
+                font-weight: bold;
+                text-align: center;
+                margin: 0 10px;
+                padding: 20px 25px;
+            }
+            #leaverequest-form .submit-travelrequest{
+                background-color: #0f9d80;
+                border-radius: 5px;
+                color: white;
+                display: inline-block;
+                font-weight: bold;
+                text-align: center;
+                margin: 0 10px;
+                padding: 20px 25px;
+                position: relative;
+            }
+            
+            
+            #leave-reports, #travel-reports{
+                background-color: #b12a10;
+                border-radius: 5px;
+                color: white;
+                display: inline-block;
+                font-weight: bold;
+                margin: 0 10px;
+                text-align: center;
+                padding: 20px 25px;
+            }
+            
+            .request-box {
+                background-color: #f1f1f1;
+                border-radius: 10px;
+                padding: 5px 0px;
+                margin: 15px 0;
+            }
+            .leave-reports-box {
+                border: 5px solid #1072b1;
+            }
+            .travel-reports-box {
+                border: 5px solid #0f9d80;
+            }
+            
+            
+            
+        </style>
+	</metal:block>
+
+	<metal:content-core fill-slot="content-core">
+
+        <div id="leaverequest-form">
+            
+            <div class="column">
+
+                <div class="col-100 tc" tal:condition="not:view/is_anonymous">
+                    <a class="submit-leaverequest" href="${context/absolute_url}/++add++polklibrary.form.leaverequests.models.leaverequest">Submit Leave Request</a>
+                    <a class="submit-travelrequest" href="${context/absolute_url}/++add++polklibrary.form.leaverequests.models.travelrequest">Submit Travel Request</a>
+                    <a id="leave-reports" tal:condition="view/is_reviewer" href="${context/absolute_url}/leavereport_view">Leave Reports</a>
+                    <!-- <a id="travel-reports" tal:condition="view/is_reviewer" href="${context/absolute_url}/travelreport_view">Travel Reports</a> -->
+                </div>
+                               
+                
+                
+                <div class="request-data col-45">
+                
+                    <div class="request-box leave-reports-box" tal:define="your_leave view/get_your_leaverequests; yourleavelimit python:len(your_leave)+10;">
+                        <div class="column-outer">
+                        
+                            <h3>Your leave requests</h3>
+                        
+                            <a class="your-requests" tal:repeat="item your_leave" href="${item/url}">
+                                <span>
+                                    ${item/workflow_status}
+                                </span>
+                                <span tal:content="structure item/info"></span>
+                            </a>
+                            <a id="showmore-your-requests" href="${context/absolute_url}?yourleavelimit=${yourleavelimit}">(Show more)</a>
+                        </div>
+                    </div>
+                    
+                    
+                    <div class="request-box travel-reports-box" tal:define="your_travel view/get_your_travelrequests; yourtravellimit python:len(your_travel)+10;">
+                        <div class="column-outer">
+                        
+                            <h3>Your travel requests</h3>
+                        
+                            <a class="your-requests" tal:repeat="item your_travel" href="${item/url}">
+                                <span>
+                                    ${item/workflow_status}
+                                </span>
+                                <span tal:content="structure item/info"></span>
+                            </a>
+                            <a id="showmore-your-requests" href="${context/absolute_url}?yourtravellimit=${yourtravellimit}">(Show more)</a>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+                <div class="col-5">&nbsp;</div>
+                
+                <div class="request-data col-45" tal:condition="view/is_reviewer"  tal:define="staff_content view/get_reviewers_content; stafflimit python:len(staff_content)+25">
+                    <div class="column-outer">
+                    
+                        <h3>Manager - Your staff requests</h3>
+                    
+                        <a class="your-reviews" tal:repeat="item staff_content" href="${item/url}">
+                            <span>
+                                ${item/workflow_status}
+                            </span>
+                            <span> requested by ${item/creator}</span>
+                            <span class="staff-info" tal:content="structure item/info"></span>
+                        </a>
+                        <a id="showmore-your-reviews" href="${context/absolute_url}?stafflimit=${stafflimit}">(Show more)</a>
+                    </div>
+                </div>
+                
+                <div class="col-100">
+                    
+                </div>
+            
+                            
+            </div>
+            
+            
+            <div class="clear"></div>
+        </div>
+        
+	</metal:content-core>
+
+</body>
+</html>

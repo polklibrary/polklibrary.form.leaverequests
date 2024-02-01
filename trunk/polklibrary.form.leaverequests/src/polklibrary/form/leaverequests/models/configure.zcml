@@ -1,0 +1,54 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
+    i18n_domain="polklibrary.form.leaverequests">
+    
+    <adapter
+        for="Products.CMFCore.interfaces.IFolderish
+             zope.publisher.interfaces.browser.IDefaultBrowserLayer
+             plone.dexterity.interfaces.IDexterityFTI"
+        provides="zope.publisher.interfaces.browser.IBrowserPage"
+        factory="polklibrary.form.leaverequests.models.leaverequest.AddView"
+        name="polklibrary.form.leaverequests.models.leaverequest"
+    />
+    <class class="polklibrary.form.leaverequests.models.leaverequest.AddView">
+        <require
+            permission="cmf.AddPortalContent"
+            interface="zope.publisher.interfaces.browser.IBrowserPage"
+            />
+    </class>    
+        
+    <browser:page
+        for="polklibrary.form.leaverequests.models.leaverequest.ILeaveRequest"
+        name="edit"
+        class="polklibrary.form.leaverequests.models.leaverequest.EditForm"
+        permission="cmf.ModifyPortalContent"
+    />
+    
+    
+    
+    <adapter
+        for="Products.CMFCore.interfaces.IFolderish
+             zope.publisher.interfaces.browser.IDefaultBrowserLayer
+             plone.dexterity.interfaces.IDexterityFTI"
+        provides="zope.publisher.interfaces.browser.IBrowserPage"
+        factory="polklibrary.form.leaverequests.models.travelrequest.AddView"
+        name="polklibrary.form.leaverequests.models.travelrequest"
+    />
+    <class class="polklibrary.form.leaverequests.models.travelrequest.AddView">
+        <require
+            permission="cmf.AddPortalContent"
+            interface="zope.publisher.interfaces.browser.IBrowserPage"
+            />
+    </class>    
+        
+    <browser:page
+        for="polklibrary.form.leaverequests.models.travelrequest.ITravelRequest"
+        name="edit"
+        class="polklibrary.form.leaverequests.models.travelrequest.EditForm"
+        permission="cmf.ModifyPortalContent"
+    />
+    
+</configure>
