@@ -48,7 +48,6 @@ class LeaveRequestView(BrowserView):
     def __call__(self):
         alsoProvides(self.request, IDisableCSRFProtection)
 
-        exi
         if not self.is_reviewer():
             user = api.user.get_current()
             if not str(user.getProperty("id")) in self.context.email:
